@@ -16,3 +16,6 @@ just testing cannon's physics
 ## CompoundBody
 - To create a compound body we use the group tag.
 - To give it physics we use the useCompoundBody hook, parsing the ref it returns as an prop of the group of meshes.
+
+## Interaction
+- When we set the physics to an object we can receive an api, this api have the methods to interact with the object physics.

@@ -1,5 +1,5 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, Stars } from '@react-three/drei'
 import { Physics, Debug, usePlane, useCompoundBody } from '@react-three/cannon'
 
 function Plane(props: any) {
@@ -12,7 +12,7 @@ function Plane(props: any) {
     )
 }
 function CompoundBody(props: any) {
-    const [ref] = useCompoundBody(() => ({
+    const [ref, api] = useCompoundBody(() => ({
         mass: 10,
         ...props,
         shapes: [
@@ -20,8 +20,14 @@ function CompoundBody(props: any) {
             { type: 'Sphere', position: [1, 0, 0], rotation: [0, 0, 0], args: [0.65] }
         ]
     }))
+
+    function handleClick() {
+        api.velocity.set(0, 5, 5);
+
+    }
+
     return (
-        <group ref={ref}>
+        <group onClick={handleClick} ref={ref}>
             <mesh receiveShadow castShadow>
                 <boxGeometry args={[1, 1, 1]} />
                 <meshNormalMaterial />
@@ -59,6 +65,7 @@ export function PhysicsPage() {
                 </Debug>
             </Physics>
             <OrbitControls />
+            <Stars />
         </Canvas>
     )
 
