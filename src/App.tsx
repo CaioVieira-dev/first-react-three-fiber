@@ -1,10 +1,11 @@
-import { MyFirstScene } from './pages/My-first-Scene'
+//import { MyFirstScene } from './pages/My-first-Scene'
+import { PhysicsPage } from './pages/Physics'
 
 import './globalStyles.css'
 function App() {
   return (
     <div className="App">
-      <MyFirstScene />
+      <PhysicsPage />
     </div>
   );
 }
