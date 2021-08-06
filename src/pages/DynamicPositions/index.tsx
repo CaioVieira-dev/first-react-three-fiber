@@ -5,10 +5,10 @@ import { useRef } from 'react'
 function UpAndDown() {
     const myMesh = useRef<THREE.Mesh>(null);
 
+
+
     useFrame(({ clock }) => {
-        const a = clock.getElapsedTime();
-        myMesh.current!.rotation.x = a;
-        myMesh.current!.position.y = a;
+        myMesh.current!.position.y = Math.sin(clock.getElapsedTime()) * 2
 
     });
 
