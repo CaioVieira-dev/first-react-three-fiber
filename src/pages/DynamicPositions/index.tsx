@@ -1,14 +1,19 @@
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
-function UpAndDown() {
+function UpAndDown(props: any) {
     const myMesh = useRef<THREE.Mesh>(null);
+    const time = useRef(0)
 
 
 
     useFrame(({ clock }) => {
-        myMesh.current!.position.y = Math.sin(clock.getElapsedTime()) * 2
+        if (!props.stop) {
+            time.current += 0.03
+            myMesh.current!.position.y = Math.sin(time.current) * 2
+        }
+
 
     });
 
@@ -20,12 +25,16 @@ function UpAndDown() {
     );
 }
 
+
 export function DynamicPositions() {
-    return (
+    const [stop, setStop] = useState(false)
+    return (<>
+        <button onClick={() => setStop(!stop)}>parar</button>
         <Canvas>
-            <UpAndDown />
+            <UpAndDown stop={stop} />
             <ambientLight intensity={0.1} />
             <directionalLight />
         </Canvas>
+    </>
     )
 }
