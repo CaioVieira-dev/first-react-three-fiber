@@ -3,13 +3,14 @@
 //import { MarbleMachine } from './pages/MarbleMachine'
 //import { DynamicPositions } from './pages/DynamicPositions'
 //import { DynamicPhysics } from './pages/DynamicPhysics'
-import { MyFirstGLTF } from './pages/learnGLTF'
+//import { MyFirstGLTF } from './pages/learnGLTF'
+import { Walking } from './pages/Walking'
 
 import './globalStyles.css'
 function App() {
   return (
     <div className="App">
-      <MyFirstGLTF />
+      <Walking />
     </div>
   );
 }
