@@ -5,6 +5,8 @@ import { useRef, Suspense, useEffect } from 'react'
 import { useGLTF, useAnimations, OrbitControls } from '@react-three/drei'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 
+import model from '../../assets/walkingModel.glb'
+
 type ActionName = 'idle' | 'walk' | 'walkback'
 type GLTFAction = Record<ActionName, THREE.AnimationAction>
 
@@ -22,11 +24,10 @@ type GLTFResult = GLTF & {
 }
 
 
-
 function Model(props: JSX.IntrinsicElements['group']) {
     const group = useRef<THREE.Group>()
     const state = useRef<"idle" | "walk" | "walkback">("idle");
-    const { nodes, animations } = useGLTF('/walkingModel.glb') as GLTFResult
+    const { nodes, animations } = useGLTF(model) as GLTFResult
     const { actions } = useAnimations(animations, group)
 
     useEffect(() => {
