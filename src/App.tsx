@@ -4,13 +4,15 @@
 //import { DynamicPositions } from './pages/DynamicPositions'
 //import { DynamicPhysics } from './pages/DynamicPhysics'
 //import { MyFirstGLTF } from './pages/learnGLTF'
-import { Walking } from './pages/Walking'
+//import { Walking } from './pages/Walking'
+import { ControllingCharacter } from './pages/ControllingCharacter'
+
 
 import './globalStyles.css'
 function App() {
   return (
     <div className="App">
-      <Walking />
+      <ControllingCharacter />
     </div>
   );
 }
