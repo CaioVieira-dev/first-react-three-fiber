@@ -1,9 +1,10 @@
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
-import { Physics, Debug, usePlane, useBox } from '@react-three/cannon'
+import { Physics, Debug, usePlane, useBox, BoxProps } from '@react-three/cannon'
+import { useEffect, useRef } from 'react'
 
 function Plane(props: any) {
-    const [ref] = usePlane(() => ({ type: 'Static', ...props }))
+    const [ref] = usePlane(() => ({ type: 'Static', ...props, friction: 1 }))
     return (
         <mesh receiveShadow ref={ref}>
             <planeGeometry args={[8, 8]} />
@@ -11,16 +12,72 @@ function Plane(props: any) {
         </mesh>
     )
 }
-function Box(props: any) {
+function Box(props: BoxProps) {
+    const Dir = useRef<"front" | "back" | 'left' | 'right' | 'stop'>('stop')
+    const curPos = useRef([0, 0, 0])
     const [ref, api] = useBox(() => ({
-        mass: 10,
+
+        mass: 1,
         ...props,
-        position: [0, 0, 0], rotation: [0, 0, 0], args: [1, 1, 1]
+        position: [0, 0, 0], rotation: [0, 0, 0], args: [1, 1, 1], fixedRotation: true
     }
     ))
+    useEffect(() => {
+        function keyBinding(e: KeyboardEvent) {
+            if (e.code === "KeyA") {
+                Dir.current = 'left';
+            }
+            if (e.code === 'KeyD') {
+                Dir.current = 'right';
 
+            }
+            if (e.code === 'KeyW') {
+                Dir.current = 'front';
 
+            }
+            if (e.code === 'KeyS') {
+                Dir.current = 'back';
 
+            }
+            if (e.code === 'Space') {
+                api.velocity.set(0, 10, 0)
+            }
+        }
+        function stop() {
+            Dir.current = 'stop'
+        }
+
+        document.addEventListener('keydown', keyBinding)
+        document.addEventListener('keyup', stop)
+        api.position.subscribe(p => curPos.current = p) //sync position variable
+        return () => {
+            document.removeEventListener('keypress', keyBinding)
+            document.removeEventListener('keyup', stop)
+        }
+    }, [api.position, api.velocity])
+
+    useFrame(() => {
+        switch (Dir.current) {
+            case "front":
+                curPos.current[0] += 0.1;
+                api.position.set(curPos.current[0], curPos.current[1], curPos.current[2])
+                break;
+            case "back":
+                curPos.current[0] -= 0.1;
+                api.position.set(curPos.current[0], curPos.current[1], curPos.current[2])
+                break;
+            case "right":
+                curPos.current[2] += 0.1;
+                api.position.set(curPos.current[0], curPos.current[1], curPos.current[2])
+                break;
+            case "left":
+                curPos.current[2] -= 0.1;
+                api.position.set(curPos.current[0], curPos.current[1], curPos.current[2])
+                break;
+
+        }
+
+    })
     return (
         <mesh ref={ref} receiveShadow castShadow>
             <boxGeometry args={[1, 1, 1]} />
@@ -46,10 +103,10 @@ export function Controls() {
                 castShadow
                 shadow-mapSize-width={1028}
                 shadow-mapSize-height={1028} />
-            <Physics iterations={6} >
+            <Physics iterations={6} gravity={[0, -10, 0]} >
                 <Debug scale={1.1} color="black">
                     <Plane rotation={[-Math.PI / 2, 0, 0]} />
-                    <Box position={[1.5, 5, 0.5]} rotation={[1.25, 0, 0]} />
+                    <Box position={[1.5, 2, 1]} />
 
                 </Debug>
             </Physics>
