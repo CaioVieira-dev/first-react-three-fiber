@@ -5,14 +5,15 @@
 //import { DynamicPhysics } from './pages/DynamicPhysics'
 //import { MyFirstGLTF } from './pages/learnGLTF'
 //import { Walking } from './pages/Walking'
-import { ControllingCharacter } from './pages/ControllingCharacter'
+//import { ControllingCharacter } from './pages/ControllingCharacter'
+import { Controls } from './pages/Controls'
 
 
 import './globalStyles.css'
 function App() {
   return (
     <div className="App">
-      <ControllingCharacter />
+      <Controls />
     </div>
   );
 }
